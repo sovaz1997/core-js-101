@@ -323,8 +323,38 @@ function isString(value) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+
+function getCardId(value) {
+  const positions = {
+    A: 0,
+    J: 10,
+    Q: 11,
+    K: 12,
+  };
+
+  function suitMultipler(suit) {
+    switch (suit) {
+      case '♦':
+        return 13;
+      case '♥':
+        return 13 * 2;
+      case '♠':
+        return 13 * 3;
+      default:
+        return 0;
+    }
+  }
+
+
+  const number = value.slice(0, value.length - 1);
+  const suit = value[value.length - 1];
+  const res = suitMultipler(suit);
+
+  if (positions[number] !== undefined) {
+    return res + positions[number];
+  }
+
+  return res + Number(number) - 1;
 }
 
 
