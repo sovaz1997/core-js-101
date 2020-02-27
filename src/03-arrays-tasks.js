@@ -527,8 +527,9 @@ function getIdentityMatrix(n) {
  *     0, 100 => [ 0, 1, 2, ..., 100 ]
  *     3, 3   => [ 3 ]
  */
-function getIntervalArray(/* start, end */) {
-  throw new Error('Not implemented');
+function getIntervalArray(start, end) {
+  const res = Array(end - start + 1).fill(0);
+  return res.map((it, index) => start + index);
 }
 
 /**
@@ -542,8 +543,8 @@ function getIntervalArray(/* start, end */) {
  *   [ 'a', 'a', 'a', 'a' ]  => [ 'a' ]
  *   [ 1, 1, 2, 2, 3, 3, 4, 4] => [ 1, 2, 3, 4]
  */
-function distinct(/* arr */) {
-  throw new Error('Not implemented');
+function distinct(arr) {
+  return Array.from(new Set(arr));
 }
 
 /**
@@ -576,8 +577,19 @@ function distinct(/* arr */) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  const res = new Map();
+
+  array.map((it) => {
+    if (!res.has(keySelector(it))) {
+      res.set(keySelector(it), []);
+    }
+
+    res.get(keySelector(it)).push(valueSelector(it));
+    return it;
+  });
+
+  return res;
 }
 
 
@@ -611,8 +623,9 @@ function selectMany(/* arr, childrenSelector */) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  if (indexes.length === 1) return arr[indexes];
+  return getElementByIndexes(arr[indexes[0]], indexes.slice(1));
 }
 
 
@@ -634,8 +647,18 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  const result = arr;
+  const half = Math.ceil(arr.length / 2);
+
+  return result.map((it, index) => {
+    if (index + half < result.length) {
+      const tmp = arr[index + half];
+      result[index + half] = it;
+      return tmp;
+    }
+    return it;
+  });
 }
 
 
