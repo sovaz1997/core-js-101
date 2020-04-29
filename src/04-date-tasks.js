@@ -74,8 +74,28 @@ function isLeapYear(date) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,10,0,0,250)     => "00:00:00.250"
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
-function timeSpanToString(/* startDate, endDate */) {
-  throw new Error('Not implemented');
+
+function timeSpanToString(startDate, endDate) {
+  const fill = (number, length) => {
+    const numberStr = String(number);
+
+    const res = numberStr.split();
+
+    for (let i = 0; i < Math.abs(length - numberStr.length); i += 1) {
+      res.unshift('0');
+    }
+
+    return res.join('');
+  };
+
+  const diff = new Date(endDate - startDate).getTime();
+
+  const hours = Math.floor(diff / 3600000);
+  const minutes = Math.floor(diff / 60000) % 60;
+  const seconds = Math.floor(diff / 1000) % 60;
+  const ms = diff % 1000;
+
+  return `${fill(hours, 2)}:${fill(minutes, 2)}:${fill(seconds, 2)}.${fill(ms, 3)}`;
 }
 
 
@@ -93,8 +113,11 @@ function timeSpanToString(/* startDate, endDate */) {
  *    Date.UTC(2016,3,5,18, 0) => Math.PI
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
-function angleBetweenClockHands(/* date */) {
-  throw new Error('Not implemented');
+function angleBetweenClockHands(date) {
+  const full = 2 * Math.PI;
+  const a = ((date.getHours() % 12) / 12) * full;
+  const b = (date.getMinutes() / 60) * full;
+  return Math.abs(a - b);
 }
 
 
